@@ -14,8 +14,17 @@ const koa = new Koa();
 //var router = new Router();
 
 var router = require('./controllers/userController');
+//rota simples pra testar se o servidor está online
+
+var routerRoot = require('koa-router')();
+
+routerRoot.get('/', async (ctx) => {
+  ctx.body = `Seu servidor esta rodando em http://localhost:${PORT}`; //http://localhost:3000/
+});
 
 koa
+  .use(routerRoot.routes())
+  .use(routerRoot.allowedMethods())
   .use(router.routes())
   .use(router.allowedMethods());
 
