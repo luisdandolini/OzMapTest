@@ -8,7 +8,7 @@
 const PORT = process.env.PORT || 3000;
 
 const Koa = require('koa');
-const Router = require('koa-router');
+const bodyParser = require('koa-bodyparser');
 
 const koa = new Koa();
 //var router = new Router();
@@ -25,8 +25,10 @@ routerRoot.get('/', async (ctx) => {
 koa
   .use(routerRoot.routes())
   .use(routerRoot.allowedMethods())
+  .use(bodyParser())
   .use(router.routes())
   .use(router.allowedMethods());
+  
 
 const server = koa.listen(PORT);
 
