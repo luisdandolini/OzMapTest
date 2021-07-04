@@ -1,16 +1,28 @@
 var router = require('koa-router')();
-
-
-//rota simples pra testar se o servidor está online
-router.get('/', async (ctx) => {
-  ctx.body = `Seu servidor esta rodando em http://localhost:${PORT}`; //http://localhost:3000/
-});
+var userList = [];
 
 //Uma rota de exemplo simples aqui.
 //As rotas devem ficar em arquivos separados, /src/controllers/userController.js por exemplo
 router.get('/users', async (ctx) => {
     ctx.status = 200;
-    ctx.body = {total:0, count: 0, rows:[]}
+    ctx.body = {rows:userList}
+});
+
+router.post('/users/create', async (ctx) => {
+  var user = ctx.request.body;
+
+
+  if((user.hasOwnProperty('name', 'email', 'idade')) && (user.idade >= 18) ){
+    // se o nome o email e a idade estiverem no body
+    // e se a idade for maior que 18
+    userList.push(user);
+    ctx.response.status = 200;
+    ctx.response.body = user;
+  }else{
+    ctx.response.status = 400;
+    ctx.response.body = {error: "invalid data"};
+  }
+  
 });
 
 module.exports = router;
